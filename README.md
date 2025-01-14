@@ -44,3 +44,21 @@ sudo tcpdump -i enp2s0
 sudo tcpdump -i enp2s0 tcp
 sudo tcpdump -i enp2s0 tcp -w ./captura.pcap
 ```
+
+Copiando o arquivo para uma pasta que qualquer um consegue ler o arquivo:
+```sh
+cp captura.pcap /tmp/
+```
+
+OBS.: não é necessário se for criado na pasta de aluno
+
+Dando permissão de leitura:
+```sh
+chmod 444 /tmp/captura.pcap 
+```
+
+![alt text](./images/image-1.png)
+
+![alt text](./images/image-2.png)
+
+![alt text](./images/image.png)
