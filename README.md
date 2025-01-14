@@ -68,3 +68,27 @@ Pesquisar por um IP específico:
 ![alt text](image.png)
 
 ![alt text](image-1.png)
+
+Convertendo o campo tempo das capturas para o formato Epoch e apresentando o resultado no terminal:
+```sh
+tshark -r /tmp/captura.pcap -Y tcp -T fields -e frame.time_epoch
+```
+
+Redirecionando a saída para um arquivo de texto:
+```sh
+tshark -r /tmp/captura.pcap -Y tcp -T fields -e frame.time_epoch > /tmp/tempo
+```
+
+Exibir portas de origem das capturas:
+```sh
+tshark -r /tmp/captura.pcap -Y tcp -T fields -e tcp.srcport
+```
+
+Redirecionando a saída para umm arquivo de texto:
+```sh
+tshark -r /tmp/captura.pcap -Y tcp -T fields -e tcp.srcport > /tmp/porta_origem
+```
+
+```sh
+for i in /tmp/tempo /tmp/porta_origem; do cat "$i" >> complete.txt; done
+```
