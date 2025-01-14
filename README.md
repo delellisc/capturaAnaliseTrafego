@@ -61,4 +61,10 @@ chmod 444 /tmp/captura.pcap
 
 ![alt text](./images/image-2.png)
 
+Ao abrir, serão apresentadas as capturas feitas pelo tcpdump:
 ![alt text](./images/image.png)
+
+Pesquisar por um IP específico:
+![alt text](image.png)
+
+![alt text](image-1.png)

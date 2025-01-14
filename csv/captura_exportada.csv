@@ -1,0 +1,8 @@
+"No.","Time","Source","Destination","Protocol","Length","Info"
+"1","0.000000","10.49.10.60","172.64.149.23","TCP","54","45210  >  80 [ACK] Seq=1 Ack=1 Win=501 Len=0"
+"2","0.056605","172.64.149.23","10.49.10.60","TCP","60","[TCP ACKed unseen segment] 80  >  45210 [ACK] Seq=1 Ack=2 Win=9 Len=0"
+"17","10.243996","10.49.10.60","172.64.149.23","TCP","54","[TCP Dup ACK 1#1] 45210  >  80 [ACK] Seq=1 Ack=1 Win=501 Len=0"
+"18","10.301003","172.64.149.23","10.49.10.60","TCP","60","[TCP Dup ACK 2#1] 80  >  45210 [ACK] Seq=1 Ack=2 Win=9 Len=0"
+"19","14.805984","10.49.10.60","172.64.149.23","TCP","54","[TCP Previous segment not captured] 45210  >  80 [FIN, ACK] Seq=2 Ack=1 Win=501 Len=0"
+"20","14.863306","172.64.149.23","10.49.10.60","TCP","60","[TCP ACKed unseen segment] 80  >  45210 [FIN, ACK] Seq=1 Ack=3 Win=9 Len=0"
+"21","14.863371","10.49.10.60","172.64.149.23","TCP","54","45210  >  80 [ACK] Seq=3 Ack=2 Win=501 Len=0"
