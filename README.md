@@ -1,6 +1,6 @@
 # Avaliação de Redes
 
-## comandos da avaliação
+## Comandos para instalar ferramentas necessarias
 
 Instalação das ferramentas necessárias para a avaliação:
 ```sh
@@ -36,7 +36,9 @@ Rodando esse comando apenas para garantir:
 sudo apt -y --fix-broken install
 ```
 
-Comandos para verificar o tráfico tcp da placa ethernet:
+## Comandos para realizar a captura
+
+Comandos para verificar o tráfego tcp da placa ethernet:
 ```sh
 sudo tcpdump -D
 ```
@@ -54,6 +56,10 @@ sudo tcpdump -i enp2s0
 Filtrar para trafego TCP:
 ```sh
 sudo tcpdump -i enp2s0 tcp
+```
+
+Redirecionando a saida do comando para um arquivo:
+```sh
 sudo tcpdump -i enp2s0 tcp -w ./captura.pcap
 ```
 
@@ -69,16 +75,27 @@ Dando permissão de leitura:
 chmod 444 /tmp/captura.pcap 
 ```
 
+## Wireshark
+
+Apos isso, e preciso abrir o wiresharkpara visualizar as informacoes do arquivo de captura:
+```sh
+wireshark
+```
+O programa sera aberto, apresentando a seguinte interface grafica:
 ![alt text](./images/image-1.png)
 
+No canto superior direito seleciona-se a opcao "File" e em seguida "Open" para abrir o arquivo. A interface abaixo sera aberta e o caminho do arquivo deve ser acessado/fornecido no campo de texto:
 ![alt text](./images/image-2.png)
 
 Ao abrir, serão apresentadas as capturas feitas pelo tcpdump:
 ![alt text](./images/image.png)
 
-Pesquisar por um IP específico:
+Para pesquisar por um IP específico, eh preciso formular uma string de busca informando o IP desejado e inserir no campo de texto na parte superior da pagina:
 ![alt text](image.png)
 
+## Exportacao e tratamento dos dados de captura
+
+Por fim, para exportar os dados em formato .csv, sera necessario selecionar "File", "Export Packet Dissections" e "As CSV" como mostra a imagem abaixo:
 ![alt text](image-1.png)
 
 Convertendo o campo tempo das capturas para o formato Epoch e apresentando o resultado no terminal:
