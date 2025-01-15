@@ -38,9 +38,21 @@ sudo apt -y --fix-broken install
 
 Comandos para verificar o tráfico tcp da placa ethernet:
 ```sh
-sudo tcpdump -i 1 tcp
 sudo tcpdump -D
+```
+
+O comando abaixo exibe o trafego de rede da placa de rede 1:
+```sh
+sudo tcpdump -i 1 tcp
+```
+
+E equivalente ao comando a seguir:
+```sh
 sudo tcpdump -i enp2s0
+```
+
+Filtrar para trafego TCP:
+```sh
 sudo tcpdump -i enp2s0 tcp
 sudo tcpdump -i enp2s0 tcp -w ./captura.pcap
 ```
@@ -87,8 +99,4 @@ tshark -r /tmp/captura.pcap -Y tcp -T fields -e tcp.srcport
 Redirecionando a saída para umm arquivo de texto:
 ```sh
 tshark -r /tmp/captura.pcap -Y tcp -T fields -e tcp.srcport > /tmp/porta_origem
-```
-
-```sh
-for i in /tmp/tempo /tmp/porta_origem; do cat "$i" >> complete.txt; done
 ```
