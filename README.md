@@ -1,6 +1,112 @@
-# Avaliação de Redes
+<!-- # Avaliação de Redes -->
 
-## Comandos para instalar ferramentas necessarias
+# FLUXO DE COMANDOS APÓS MUDANÇA DAS INSTRUÇÕES
+
+## Realizando captura
+### Instalando TShark:
+```sh
+sudo apt-get update
+sudo apt-get -y install tshark
+```
+
+Verificando após a instalação:
+```sh
+tshark --version
+```
+### Fazendo a captura:
+Criando um arquivo para receber informações da captura:
+```sh
+touch captura_limitada.cap
+chmod 666 captura_limitada.cap 
+```
+
+Realizando a captura limitando a 30.000 pacotes:
+```sh
+sudo tshark -i enp2s0 -w ./captura_limitada.cap -a filesize:30000
+```
+
+### Obter informações do arquivo de captura:
+```sh
+sudo capinfos ./captura_limitada.cap && ls -la ./captura_limitada.cap && uname -ompvn
+```
+OBS.: apenas para verificar se está correto.
+
+### Exibindo informações no nível TCP:
+
+Algumas informações de fluxo:
+```sh
+tshark -r ./captura_limitada.cap -Y tcp -T fields -e frame.time_relative -e ip.proto -e ip.src -e ip.dst -e tcp.srcport -e tcp.dstport
+```
+
+Tamanho do pacote e tempo entre chegadas em formato CSV:
+```sh
+tshark -r ./captura_limitada.cap -Y tcp -T fields -e frame.time_relative -e ip.proto -e ip.src -e ip.dst -e tcp.srcport -e tcp.dstport -e ip.len -e frame.time_delta -E separator=,
+```
+
+Pacotes que envolvem solicitação de conexão TCP:
+```sh
+tshark -r ./captura_limitada.cap -Y '(tcp && tcp.flags.syn==1 && tcp.flags.ack==0)' -T fields -e frame.number -e frame.time_relative -e ip.proto -e ip.src -e ip.dst -e tcp.srcport -e tcp.dstport -e ip.len -e frame.time_delta -E separator=,
+```
+
+Redirecionando a saída do comando a seguir para o arquivo "tcp.tmp":
+```sh
+tshark -r ./captura_limitada.cap -Y '(tcp && tcp.flags.syn==1 && tcp.flags.ack==0)' -T fields -e frame.number -e frame.time_relative -e ip.proto -e ip.src -e ip.dst -e tcp.srcport -e tcp.dstport -e ip.len -e frame.time_delta -E separator=, > ./tcp.tmp
+```
+
+Estatísicas do volume de dados em fluxo TCP:
+```sh
+tshark -r ./captura_limitada.cap -q -z 'conv,tcp,ip'
+```
+
+Filtrando as colunas a serem exibidas no comando acima (exibindo colunas 1, 3, 8 e 9):
+```sh
+tshark -r ./captura_limitada.cap -q -z 'conv,tcp,ip' | grep '<->' | awk '{ print $1 "," $3 "," $8 "," $9"," $11 }'
+```
+
+### Extraindo informações HTTP
+Tráfego HTTP:
+```sh
+tshark -r ./captura_limitada.cap -Y 'tcp && (tcp.dstport==80 || tcp.dstport==443)' -T fields -e frame.number -e frame.time_relative -e ip.proto -e ip.src -e ip.dst -e tcp.srcport -e tcp.dstport -e ip.len -e frame.time_delta -E separator=\,
+```
+
+Domínios visitados:
+```sh
+tshark -r ./captura_limitada.cap -Y http.request -T fields -e http.host | sort -u
+```
+
+Domínios mais visitados (filtrado por quantidade n=10):
+```sh
+tshark -r ./captura_limitada.cap -Y http.request -T fields -e http.host | sort -u
+```
+
+Conexões HTTP inseguras (fitrado pela porta dstport==80):
+```sh
+for stream in $(tshark -nlr "./captura_limitada.cap" -Y '(tcp.flags.syn==1 && tcp.dstport==80)' -T fields -e tcp.stream | sort -n | uniq); 
+    do echo "DADOS DO FLUXO $stream" ; tshark -nlr "./captura_limitada.cap" -q -z "follow,tcp,ascii,$stream";
+done | more
+```
+
+Exemplo de saída:
+```sh
+DADOS DO FLUXO 12
+
+===================================================================
+Follow: tcp,ascii
+Filter: tcp.stream eq 12
+Node 0: 10.49.10.60:60274
+Node 1: 23.212.191.102:80
+431
+POST / HTTP/1.1
+Host: r10.o.lencr.org
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/
+[...]
+```
+
+## Análise dos dados recebidos
+Instalação do tranalyzer:
+
+
+<!-- ## Comandos para instalar ferramentas necessarias
 
 Instalação das ferramentas necessárias para a avaliação:
 ```sh
@@ -142,4 +248,4 @@ Esse script é responsável por ler três arquivos, o arquivo .csv com as inform
 O script pode ser rodado com o seguinte comando:
 ```sh
 python3 ./script.py 
-```
+``` -->
