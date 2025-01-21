@@ -104,7 +104,7 @@ User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/
 
 ## Análise dos dados recebidos
 Instalação do tranalyzer:
-
+![alt text](./images/image-5.png)
 
 <!-- ## Comandos para instalar ferramentas necessarias
 
