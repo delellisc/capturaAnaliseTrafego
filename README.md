@@ -91,12 +91,12 @@ Ao abrir, serão apresentadas as capturas feitas pelo tcpdump:
 ![alt text](./images/image.png)
 
 Para pesquisar por um IP específico, eh preciso formular uma string de busca informando o IP desejado e inserir no campo de texto na parte superior da pagina:
-![alt text](image.png)
+![alt text](./images/image-3.png)
 
 ## Exportacao e tratamento dos dados de captura
 
 Por fim, para exportar os dados em formato .csv, sera necessario selecionar "File", "Export Packet Dissections" e "As CSV" como mostra a imagem abaixo:
-![alt text](image-1.png)
+![alt text](./images/image-4.png)
 
 Convertendo o campo tempo das capturas para o formato Epoch e apresentando o resultado no terminal:
 ```sh
@@ -117,3 +117,23 @@ Redirecionando a saída para umm arquivo de texto:
 ```sh
 tshark -r /tmp/captura.pcap -Y tcp -T fields -e tcp.srcport > /tmp/porta_origem
 ```
+
+## Adicionar campo tempo e porta de origem na captura exportada
+Primeiramente movi/copiei os arquivos gerados no passo anterior para o diretório atual:
+```sh
+cp /tmp/porta_origem ./csv
+cp /tmp/tempo ./csv
+```
+
+Depois disso escrevi o seguinte [script](./script.py):
+```py
+with open("./csv/captura_exportada2.csv", "r") as input, open("./csv/tempo", "r") as f1, open("./csv/porta_origem", "r") as f2:
+    input_lines = input.readlines()
+    f1_lines = f1.readlines()
+    f2_lines = f2.readlines()
+with open("./csv/captura_alterada.csv", "w") as captura_alterada:
+    for line1, line2, input_line in zip(f1_lines, f2_lines, input_lines):
+        captura_alterada.write(f"{input_line.strip()}, {line1.strip()}, {line2.strip()}\n")
+```
+
+Esse script é responsável por ler três arquivos, o arquivo .csv com as informações da captura, o arquivo com o tempo criado anteriormente e o arquivo com as portas de origem também criados anteriormente. Após fazer a leitura desses arquivos e criar uma lista com as linhas, essas linhas são iteradas e escritas em um novo arquivo, "[captura_alterada](./csv/captura_alterada.csv)".
