@@ -124,7 +124,7 @@ Primeiramente movi/copiei os arquivos gerados no passo anterior para o diretóri
 cp /tmp/porta_origem ./csv
 cp /tmp/tempo ./csv
 ```
-
+### Escrevendo script
 Depois disso escrevi o seguinte [script](./script.py):
 ```py
 with open("./csv/captura_exportada2.csv", "r") as input, open("./csv/tempo", "r") as f1, open("./csv/porta_origem", "r") as f2:
@@ -137,3 +137,9 @@ with open("./csv/captura_alterada.csv", "w") as captura_alterada:
 ```
 
 Esse script é responsável por ler três arquivos, o arquivo .csv com as informações da captura, o arquivo com o tempo criado anteriormente e o arquivo com as portas de origem também criados anteriormente. Após fazer a leitura desses arquivos e criar uma lista com as linhas, essas linhas são iteradas e escritas em um novo arquivo, "[captura_alterada](./csv/captura_alterada.csv)".
+
+### Executando script
+O script pode ser rodado com o seguinte comando:
+```sh
+python3 ./script.py 
+```
