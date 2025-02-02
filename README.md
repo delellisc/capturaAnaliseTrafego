@@ -1,8 +1,10 @@
 <!-- # Avaliação de Redes -->
 
-# FLUXO DE COMANDOS APÓS MUDANÇA DAS INSTRUÇÕES
+# Avaliação 2 - Aplicação de Redes de Computadores: Captura & Análise de Tráfego
 
 ## Realizando captura
+Nesse capítulo serão comentados os passos realizados para obter um arquivo de captura de tráfego utilizando a ferramenta TShark.
+
 ### Instalando TShark:
 ```sh
 sudo apt-get update
@@ -102,9 +104,123 @@ User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/
 [...]
 ```
 
-## Análise dos dados recebidos
-Instalação do tranalyzer:
-![alt text](./images/image-5.png)
+## Refinamento dos dados recebidos
+Após a obtenção da captura, foi utilizada a ferramenta Tranalyzer2 para extrair informações relevantes, que posteriormmente seriam utilizadas na análise dos dados coletados.
+
+### Instalação do Tranalyzer2:
+Passo a passo para instalação:
+```sh
+wget https://tranalyzer.com/download/tranalyzer/tranalyzer2-0.9.0lmw1.tar.gz
+tar xzf tranalyzer2-0.9.0lmw1.tar.gz tranalyzer2-0.9.0/ls
+cd tranalyzer2-0.9.0/
+./setup.sh 
+source ~/.bashrc
+```
+Verificando após a instalação:
+```sh
+t2 --version
+```
+
+### Exibindo colunas desejadas no terminal
+Verificando o conteúdo do arquivo [results_headers.txt](./resultados/results_headers.txt), é possível verificar as existentes no arquivo de capture e informações correspondentes a elas:
+```sh
+cat ./resultados/results_headers.txt
+```
+
+Exemplo de saída:
+```sh
+# Date: 1737652709.850808 sec (Thu 23 Jan 2025 14:18:29 -03)
+# Tranalyzer 0.9.0 (Anteater), Cobra
+# Core configuration: L2, IPv4, IPv6
+# SensorID: 666
+# PID: 21566
+[...]
+# Plugins loaded:
+#   01: protoStats, version 0.9.0
+#   02: basicFlow, version 0.9.0
+#   03: macRecorder, version 0.9.0
+#   04: portClassifier, version 0.9.0
+#   05: basicStats, version 0.9.0
+[...]
+# Col No.       Type    Name    Description
+1       C       dir     Flow direction
+2       U64     flowInd Flow index
+3       H64     flowStat        Flow status and warnings
+4       U64.U32 timeFirst       Date time of first packet
+5       U64.U32 timeLast        Date time of last packet
+```
+Sabendo disso, é possível selecionar algumas colunas relevantes para serem extraídas, como as dispostas na tabela abaixo:
+
+| Informação                                     | Nome do Campo      | Número da Coluna |
+|------------------------------------------------|--------------------|------------------|
+| Duração do Fluxo                               | duration           | 6                |
+| Tamanho médio do pacote na camada 3            | avePktSize         | 35               |
+| Desvio padrão do tamanho do pacote na camada 3 | stdPktSize         | 36               |
+| Tempo médio entre chegadas (IAT)               | aveIAT             | 39               |
+| Contagem de sequência de pacotes TCP           | tcpPSeqCnt         | 58               |
+| Tamanho médio efetivo da janela TCP            | tcpAveWinSz        | 66               |
+| Média de viagem de ACK TCP                     | tcpRTTAckTripAve   | 92               |
+
+Utilizando o comando tawk para visualizar colunas selecionadas:
+```sh
+tawk -F" " '{print $6, $35, $36, $39, $58, $66, $92}' ./resultados/results_flows.txt
+```
+
+<!-- | Informação                          | Nome do campo      | Número da Coluna |
+|-------------------------------------|--------------------|------------------|
+| Duração do Fluxo                    | duration           | 6                |
+| Tamanho Médio do Pacote da Camada 3 | avePktSize         | 35               |
+| Desvio Padrão do Tamanho do Pacote  | stdPktSize         | 36               |
+| Tempo Médio entre Chegadas          | aveIAT             | 39               |
+| Contagem de Sequência TCP           | tcpPSeqCnt         | 58               |
+| Tamanho Médio da Janela TCP         | tcpAveWinSz        | 66               |
+| Média do RTT de Viagem do ACK TCP   | tcpRTTAckTripAve   | 92               | -->
+
+<!-- 
+| Informação                             | Nome do campo      | Número da Coluna |
+|----------------------------------------|--------------------|------------------|
+| Flow Duration                          | duration           | 6                |
+| Average layer 3 packet size            | avePktSize         | 35               |
+| Standard deviation layer 3 packet size | stdPktSize         | 36               |
+| Average IAT (Inter-Arrival Time)       | aveIAT             | 39               |
+| TCP packet seq count                   | tcpPSeqCnt         | 58               |
+| TCP average effective window size      | tcpAveWinSz        | 66               |
+| TCP ACK trip average                   | tcpRTTAckTripAve   | 92               |
+-->
+
+### Extraindo colunas desejadas e inserindo em um arquivo
+Redirecionando a saída do comando acima para o arquivo [colunas_extraidas.csv](./colunas_extraidas.csv):
+
+```sh
+tawk -F" " '{print $6, $35, $36, $39, $58, $66, $92}' ./resultados/results_flows.txt > colunas_extraidas.csv
+```
+
+## Elaboração do relatório
+7.1. Elabore um relatório e inclua textos e gráficos para responder às seguintes perguntas.
+Confeccione um relatório demonstrando em texto e gráficos, com o objetivo de responder os
+seguintes quesitos:
+
+### a) Qual o tempo médio de duração de um fluxo
+...
+
+### b) Qual o tamanho médio de um pacote da camada 3
+...
+
+### c) Qual o desvio padrão do tamanho de um pacote de camada 3
+...
+
+### d) Qual o inter-arrival time (IAT) - O tempo entre chegadas - de cada pacote
+...
+
+### e) No contador de sequência dos números de pacotes há algum tempo com “0”, por que
+...
+
+### isso ocorre?
+...
+
+### f) Qual a média do tempo de viagem (RTT - Round Trip Time) da flag ACK no TCP
+...
+
 
 <!-- ## Comandos para instalar ferramentas necessarias
 

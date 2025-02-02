@@ -1,0 +1,38 @@
+# Total packets: 39923 (39.92 K)
+# Total bytes: 28652135 (28.65 M)
+# L2/3 Protocol	                       Packets	                         Bytes	Description
+0x0800	               39425 [ 98.75%]	            28610976 [ 99.86%]	Internet Protocol version 4 (IPv4)
+0x0806	                 290 [  0.73%]	               17400 [  0.06%]	Address Resolution Protocol (ARP)
+0x4242	                  68 [  0.17%]	                8092 [  0.03%]	PCS Basic Block Protocol (STP/RSTP/MSTP)
+0x86dd	                 136 [  0.34%]	               14603 [  0.05%]	Internet Protocol version 6 (IPv6)
+0x88cc	                   4 [  0.01%]	                1064 [  0.00%]	Link Layer Discovery Protocol (LLDP)
+
+
+# Total IPv4 packets: 39425 (39.42 K) [98.75%]
+# Total IPv6 packets: 136 [0.34%]
+# L4 Protocol	                       Packets	                         Bytes	Description
+  2	                 318 [  0.80%]	               19098 [  0.07%]	Internet Group Management Protocol (IGMP)
+  6	               37399 [ 93.68%]	            28105383 [ 98.09%]	Transmission Control Protocol (TCP)
+ 17	                1777 [  4.45%]	              495092 [  1.73%]	User Datagram Protocol (UDP)
+ 58	                  67 [  0.17%]	                6006 [  0.02%]	Internet Control Message Protocol for IPv6 (ICMPv6)
+
+
+# Total TCP packets: 37399 (37.40 K) [93.68%]
+# Total TCP bytes: 28105383 (28.11 M) [98.09%]
+# TCP Port	                       Packets	                         Bytes	Description
+   80	                 320 [  0.86%]	               52333 [  0.19%]	World Wide Web HTTP
+  443	               37079 [ 99.14%]	            28053050 [ 99.81%]	HTTP protocol over TLS/SSL
+
+
+# Total UDP packets: 1777 (1.78 K) [4.45%]
+# Total UDP bytes: 495092 (495.09 K) [1.73%]
+# UDP Port	                       Packets	                         Bytes	Description
+   53	                1331 [ 74.90%]	              159398 [ 32.20%]	Domain Name Server (DNS)
+   67	                   2 [  0.11%]	                 739 [  0.15%]	Bootstrap Protocol Server
+  137	                  27 [  1.52%]	                2916 [  0.59%]	NETBIOS Name Service
+  138	                   8 [  0.45%]	                1944 [  0.39%]	NETBIOS Datagram Service
+  443	                 212 [ 11.93%]	              296588 [ 59.91%]	HTTP protocol over TLS/SSL
+  546	                   6 [  0.34%]	                 972 [  0.20%]	DHCPv6 Client
+ 1900	                  63 [  3.55%]	               18787 [  3.79%]	Simple Service Discovery Protocol
+ 5353	                 110 [  6.19%]	               12344 [  2.49%]	Multicast DNS
+ 5355	                  18 [  1.01%]	                1404 [  0.28%]	Link Local Multicast Name Resolution
