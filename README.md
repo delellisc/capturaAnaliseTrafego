@@ -212,10 +212,7 @@ seguintes quesitos:
 ### d) Qual o inter-arrival time (IAT) - O tempo entre chegadas - de cada pacote
 ...
 
-### e) No contador de sequência dos números de pacotes há algum tempo com “0”, por que
-...
-
-### isso ocorre?
+### e) No contador de sequência dos números de pacotes há algum tempo com “0”, por que isso ocorre?
 ...
 
 ### f) Qual a média do tempo de viagem (RTT - Round Trip Time) da flag ACK no TCP
