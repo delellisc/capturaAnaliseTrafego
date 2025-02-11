@@ -1,5 +1,3 @@
-<!-- # Avaliação de Redes -->
-
 # Avaliação 2 - Aplicação de Redes de Computadores: Captura & Análise de Tráfego
 
 ## Realizando captura
@@ -116,9 +114,16 @@ cd tranalyzer2-0.9.0/
 ./setup.sh 
 source ~/.bashrc
 ```
+
 Verificando após a instalação:
 ```sh
 t2 --version
+```
+
+### Tratando dados com Tranalyzer:
+Para tratar os dados utilizando o Tranalyzer, é necessário utilizar o comando baixo:
+```sh
+t2 -r ./captura_limitada.cap -w ./resultados/results
 ```
 
 ### Exibindo colunas desejadas no terminal
@@ -166,16 +171,6 @@ Utilizando o comando tawk para visualizar colunas selecionadas:
 tawk -F" " '{print $6, $35, $36, $39, $58, $66, $92}' ./resultados/results_flows.txt
 ```
 
-<!-- | Informação                          | Nome do campo      | Número da Coluna |
-|-------------------------------------|--------------------|------------------|
-| Duração do Fluxo                    | duration           | 6                |
-| Tamanho Médio do Pacote da Camada 3 | avePktSize         | 35               |
-| Desvio Padrão do Tamanho do Pacote  | stdPktSize         | 36               |
-| Tempo Médio entre Chegadas          | aveIAT             | 39               |
-| Contagem de Sequência TCP           | tcpPSeqCnt         | 58               |
-| Tamanho Médio da Janela TCP         | tcpAveWinSz        | 66               |
-| Média do RTT de Viagem do ACK TCP   | tcpRTTAckTripAve   | 92               | -->
-
 <!-- 
 | Informação                             | Nome do campo      | Número da Coluna |
 |----------------------------------------|--------------------|------------------|
@@ -196,9 +191,7 @@ tawk -F" " '{print $6, $35, $36, $39, $58, $66, $92}' ./resultados/results_flows
 ```
 
 ## Elaboração do relatório
-7.1. Elabore um relatório e inclua textos e gráficos para responder às seguintes perguntas.
-Confeccione um relatório demonstrando em texto e gráficos, com o objetivo de responder os
-seguintes quesitos:
+Elabore um relatório e inclua textos e gráficos para responder às seguintes perguntas. Confeccione um relatório demonstrando em texto e gráficos, com o objetivo de responder os seguintes quesitos:
 
 ### a) Qual o tempo médio de duração de um fluxo
 ...
@@ -218,147 +211,316 @@ seguintes quesitos:
 ### f) Qual a média do tempo de viagem (RTT - Round Trip Time) da flag ACK no TCP
 ...
 
+# Escrita do relatório
 
-<!-- ## Comandos para instalar ferramentas necessarias
+## 1 INTRODUÇÃO
 
-Instalação das ferramentas necessárias para a avaliação:
-```sh
-sudo apt-get update
-sudo apt-get -y install wireshark-common tshark tcpdump
-```
+## 2 METODOLOGIA
 
-Verificando a instalação:
-```sh
-wireshark --version
-```
+Nesta seção, descreva os passos realizados durante a captura e análise:
 
-Esses pacotes não foram instalados:
-```sh
-tshark --version
-tcpdump --version
-```
+Ferramentas utilizadas: 
+- Máquina utilizada para captura
+- Máquina utilizada para análise
+- Tshark
+- Tranalyzer
+- Visual Studio Code
+- Jupyter Notebooks
 
-Instalei individualmente:
-```sh
-sudo apt-get -y install tshark
-sudo apt-get -y install tcpdump
-```
+Configuração inicial:
+- Identificação da interface de rede para captura.
+- Ajuste das permissões para execução do Tshark.
 
-Verificando após a segunda instalação:
-```sh
-tcpdump --version
-tshark --version
-```
+Captura de pacotes:
+- Comando utilizado para capturar os pacotes TCP: tshark -i <interface> -w captura.pcap -c 30000
+- Abertura de várias páginas de sites HTTP e HTTPS para gerar tráfego.
 
-Rodando esse comando apenas para garantir:
-```sh
-sudo apt -y --fix-broken install
-```
+Análise de pacotes:
+- Extração de dados TCP e HTTP usando comandos específicos.
+- Processamento dos fluxos no Tranalyzer.
 
-## Comandos para realizar a captura
+## 3. RESULTADOS
 
-Comandos para verificar o tráfego tcp da placa ethernet:
-```sh
-sudo tcpdump -D
-```
+### 3.1 Métricas de Fluxos TCP
+- Preencha os dados obtidos no Tranalyzer:
+- Tempo médio de duração de um fluxo: [resultado]
+- Tamanho médio dos pacotes de camada 3: [resultado]
+- Desvio padrão do tamanho dos pacotes: [resultado]
+- Inter-Arrival Time (IAT) médio: [resultado]
+- Média de RTT da flag ACK no TCP: [resultado]
 
-O comando abaixo exibe o trafego de rede da placa de rede 1:
-```sh
-sudo tcpdump -i 1 tcp
-```
-
-E equivalente ao comando a seguir:
-```sh
-sudo tcpdump -i enp2s0
-```
-
-Filtrar para trafego TCP:
-```sh
-sudo tcpdump -i enp2s0 tcp
-```
-
-Redirecionando a saida do comando para um arquivo:
-```sh
-sudo tcpdump -i enp2s0 tcp -w ./captura.pcap
-```
-
-Copiando o arquivo para uma pasta que qualquer um consegue ler o arquivo:
-```sh
-cp captura.pcap /tmp/
-```
-
-OBS.: não é necessário se for criado na pasta de aluno
-
-Dando permissão de leitura:
-```sh
-chmod 444 /tmp/captura.pcap 
-```
-
-## Wireshark
-
-Apos isso, e preciso abrir o wiresharkpara visualizar as informacoes do arquivo de captura:
-```sh
-wireshark
-```
-O programa sera aberto, apresentando a seguinte interface grafica:
-![alt text](./images/image-1.png)
-
-No canto superior direito seleciona-se a opcao "File" e em seguida "Open" para abrir o arquivo. A interface abaixo sera aberta e o caminho do arquivo deve ser acessado/fornecido no campo de texto:
-![alt text](./images/image-2.png)
-
-Ao abrir, serão apresentadas as capturas feitas pelo tcpdump:
-![alt text](./images/image.png)
-
-Para pesquisar por um IP específico, eh preciso formular uma string de busca informando o IP desejado e inserir no campo de texto na parte superior da pagina:
-![alt text](./images/image-3.png)
-
-## Exportacao e tratamento dos dados de captura
-
-Por fim, para exportar os dados em formato .csv, sera necessario selecionar "File", "Export Packet Dissections" e "As CSV" como mostra a imagem abaixo:
-![alt text](./images/image-4.png)
-
-Convertendo o campo tempo das capturas para o formato Epoch e apresentando o resultado no terminal:
-```sh
-tshark -r /tmp/captura.pcap -Y tcp -T fields -e frame.time_epoch
-```
-
-Redirecionando a saída para um arquivo de texto:
-```sh
-tshark -r /tmp/captura.pcap -Y tcp -T fields -e frame.time_epoch > /tmp/tempo
-```
-
-Exibir portas de origem das capturas:
-```sh
-tshark -r /tmp/captura.pcap -Y tcp -T fields -e tcp.srcport
-```
-
-Redirecionando a saída para umm arquivo de texto:
-```sh
-tshark -r /tmp/captura.pcap -Y tcp -T fields -e tcp.srcport > /tmp/porta_origem
-```
-
-## Adicionar campo tempo e porta de origem na captura exportada
-Primeiramente movi/copiei os arquivos gerados no passo anterior para o diretório atual:
-```sh
-cp /tmp/porta_origem ./csv
-cp /tmp/tempo ./csv
-```
-### Escrevendo script
-Depois disso escrevi o seguinte [script](./script.py):
 ```py
-with open("./csv/captura_exportada2.csv", "r") as input, open("./csv/tempo", "r") as f1, open("./csv/porta_origem", "r") as f2:
-    input_lines = input.readlines()
-    f1_lines = f1.readlines()
-    f2_lines = f2.readlines()
-with open("./csv/captura_alterada.csv", "w") as captura_alterada:
-    for line1, line2, input_line in zip(f1_lines, f2_lines, input_lines):
-        captura_alterada.write(f"{input_line.strip()}, {line1.strip()}, {line2.strip()}\n")
+# 6	U64.U32	duration	Flow duration
+tempo_medio_duracao = df['duration'].mean()
+# 35	F	avePktSize	Average layer 3 packet size
+tamanho_medio_pacotes = df['avePktSize'].mean()
+# 36	F	stdPktSize	Standard deviation layer 3 packet size
+desvio_padrao_pacotes = df['stdPktSize'].mean()
+# 39	F	aveIAT	Average IAT
+iat_medio = df['aveIAT'].mean()
+# 92	F	tcpRTTAckTripAve	TCP ACK trip average
+rtt_medio = df['tcpRTTAckTripAve'].mean()
+
+print(f"Tempo médio de duração de um fluxo: {tempo_medio_duracao:.2f} segundos")
+print(f"Tamanho médio dos pacotes de camada 3: {tamanho_medio_pacotes:.2f} bytes")
+print(f"Desvio padrão do tamanho dos pacotes: {desvio_padrao_pacotes:.2f} bytes")
+print(f"Inter-Arrival Time (IAT) médio: {iat_medio:.2f} segundos")
+print(f"Média de RTT da flag ACK no TCP: {rtt_medio:.2f} segundos")
 ```
 
-Esse script é responsável por ler três arquivos, o arquivo .csv com as informações da captura, o arquivo com o tempo criado anteriormente e o arquivo com as portas de origem também criados anteriormente. Após fazer a leitura desses arquivos e criar uma lista com as linhas, essas linhas são iteradas e escritas em um novo arquivo, "[captura_alterada](./csv/captura_alterada.csv)".
+Saída:
+```
+Tempo médio de duração de um fluxo: 20.29 segundos
+Tamanho médio dos pacotes de camada 3: 322.28 bytes
+Desvio padrão do tamanho dos pacotes: 213.70 bytes
+Inter-Arrival Time (IAT) médio: 4.94 segundos
+Média de RTT da flag ACK no TCP: 2.25 segundos
+```
 
-### Executando script
-O script pode ser rodado com o seguinte comando:
-```sh
-python3 ./script.py 
-``` -->
+### 3.2 Análise de Pacotes HTTP
+Apresente as informações extraídas:
+Domínios visitados:
+- [Domínio 1]
+- [Domínio 2]
+- [Outros...]
+
+Quantidade de solicitações HTTP (porta 80):
+- [resultado]
+
+Quantidade de solicitações HTTPS (porta 443):
+- [resultado]
+
+Quantidade de visitas por domínio:
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Endereço de destino</th>
+      <th>Domínio</th>
+      <th>Visitas</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>10.49.10.60</td>
+      <td></td>
+      <td>480</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10.54.0.155</td>
+      <td></td>
+      <td>352</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>224.0.0.22</td>
+      <td></td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>04</td>
+      <td></td>
+      <td>68</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>10</td>
+      <td></td>
+      <td>44</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+Quantidade de solicitações por porta:
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Porta</th>
+      <th>Solicitações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>53</td>
+      <td>352</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>443</td>
+      <td>119</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>74</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>10.49.10.60</td>
+      <td>68</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>addresses"</td>
+      <td>32</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+### 3.3 Gráficos
+Inclua gráficos gerados a partir das métricas:
+- Gráfico de barras para o tempo médio de duração dos fluxos.
+- Histograma para o tamanho dos pacotes de camada 3.
+- Gráfico de linha para representar o IAT médio entre pacotes.
+
+#### Gráfico de barras para o tempo médio de duração dos fluxos.
+![alt text](imagens/image-1.png)
+
+#### Histograma para o tamanho dos pacotes de camada 3.
+![alt text](imagens/image-2.png)
+
+Tabela ampla:
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Tamanho do pacote de camada 3</th>
+      <th>Frequência</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>&lt; 1000</td>
+      <td>1213</td>
+    </tr>
+    <tr>
+      <td>1000-2000</td>
+      <td>145</td>
+    </tr>
+    <tr>
+      <td>2000-3000</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <td>3000-4000</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>&gt; 4000</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+Tabela detalhada:
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Tamanho do pacote de camada 3</th>
+      <th>Frequência</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0-200</td>
+      <td>1033</td>
+    </tr>
+    <tr>
+      <td>200-400</td>
+      <td>85</td>
+    </tr>
+    <tr>
+      <td>400-600</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <td>600-800</td>
+      <td>70</td>
+    </tr>
+    <tr>
+      <td>800-1000</td>
+      <td>7</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+#### Gráfico de linha para representar o IAT médio entre pacotes.
+![alt text](imagens/image-3.png)
+
+## 4 DISCUSSÃO
+Responda às questões propostas na atividade:
+- Por que há tempos com "0" no contador de sequência TCP?
+    - Resposta: [Explique brevemente o motivo técnico.]
+- O que os dados analisados indicam sobre a qualidade da conexão entre as redes? 
+    - Resposta: [Discuta com base nos valores de RTT, tamanho dos pacotes e IAT]
+
+Momento final do trabalho em que o autor apresenta suas conclusões correspondentes aos objetivos.
+
+## 5 CONCLUSÃO
+Resuma os resultados da atividade, destacando:
+- A eficiência do uso do Tshark e do Tranalyzer para a análise de tráfego.
+- A importância de entender as métricas TCP e HTTP para o diagnóstico de redes.
